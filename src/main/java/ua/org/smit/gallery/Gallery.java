@@ -54,4 +54,6 @@ public interface Gallery {
 
     List<ImageInfo> getAllImagesInfos();
 
+    public boolean isAliasExist(String alias);
+
 }

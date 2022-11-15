@@ -31,6 +31,8 @@ public class GalleryService implements Gallery {
     private final TagsService tagsService = new TagsService();
 
     private final FolderCms galleryFolder;
+    
+    private Optional<List<String>> aliases = Optional.empty();
 
     public GalleryService(FolderCms gallery, SessionFactory sessionFactory) {
         this.galleryFolder = gallery;
@@ -199,6 +201,20 @@ public class GalleryService implements Gallery {
     @Override
     public List<ImageInfo> getAllImagesInfos() {
         return this.imageInfoDAO.findAll();
+    }
+
+    @Override
+    public boolean isAliasExist(String alias) {
+        if (!aliases.isPresent()){
+            aliases = Optional.ofNullable(this.getAllAlbumAliases());
+        }
+        
+        for (String aliasInDb : aliases.get()) {
+            if (aliasInDb.equalsIgnoreCase(alias)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
